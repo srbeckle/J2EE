@@ -1,0 +1,21 @@
+@CHARSET "ISO-8859-1";
+h2 {
+	color:blue;
+	text-align:center;
+	padding:10px;
+}
+
+body {
+    background-color:rgb(80,124,125);
+}
+
+#div1,#div5,#div9
+{
+	width: 10%;
+}
+
+
+div {
+	float: left;
+	width: 25%;
+}

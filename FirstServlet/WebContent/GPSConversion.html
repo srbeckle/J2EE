@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+	var column;
+	function Myclear(p1, p2, p3) {
+		document.getElementById(p1).children[0].value = "";
+		document.getElementById(p2).children[0].value = "";
+		column = p3;
+		//alert(column);
+	}
+	function convert() {
+		switch (column) {
+		case 1:
+			convert1();
+			break;
+		case 2:
+			convert2();
+			break;
+		case 3:
+			convert3();
+			break;
+		default:
+		}
+	}
+	function convert1()
+	{
+		var decimalLatitude =  parseFloat(document.getElementById("div2").children[0].value);
+		var decimalLongitude =  parseFloat(document.getElementById("div6").children[0].value);
+		
+		var latPrefix = ""; 
+		var longPrefix = ""; 
+		
+		
+	    if (decimalLatitude < 1) {
+			latPrefix = "-";
+			decimalLatitude *= -1;
+		}
+	    if (decimalLongitude < 1) {
+	    	longPrefix = "-";
+			decimalLongitude *= -1;
+		}
+
+		//convert to DDD MM SS
+		var degLat = parseInt(decimalLatitude, 10);
+		var degLong = parseInt(decimalLongitude, 10);
+		var latRemainder = decimalLatitude - degLat;
+		var longRemainder = decimalLongitude - degLong;
+		var x = latRemainder * 60; //includes decimal, must remove  e.g. 12.345
+		var y = longRemainder * 60; //includes decimal, must remove e.g. 4.567
+
+		var mmLat = parseInt(x, 10);
+		var mmLong = parseInt(y, 10);
+
+		var secLatitude = Number((x - mmLat) * 60).toFixed(2);
+		var secLongitude = Number((y - mmLong) * 60).toFixed(2);
+		
+		document.getElementById("div3").children[0].value = latPrefix + "" + degLat + " " + mmLat + " " + secLatitude;
+		document.getElementById("div7").children[0].value = longPrefix + "" + degLong + " " + mmLong + " " + secLongitude;
+		
+		document.getElementById("div4").children[0].value = latPrefix + "" + degLat + " " + x.toFixed(4);
+		document.getElementById("div8").children[0].value = longPrefix + "" + degLong + " " + y.toFixed(4);
+		
+	}
+</script>
+<meta charset="ISO-8859-1">
+<title>GPS Coordinates</title>
+<link rel="stylesheet" type="text/css" href="GPS.css">
+</head>
+<body>
+
+	<h2>GPS Coordinate Conversion</h2>
+
+	<div id="div1">Latitude</div>
+	<div id="div2">
+		<input type="text" name="lat1" size=20
+			onclick="Myclear('div3','div4',1)">
+	</div>
+	<div id="div3">
+		<input type="text" name="lat2" size=20
+			onclick="Myclear('div2','div4',2)">
+	</div>
+	<div id="div4">
+		<input type="text" name="lat3" size=20
+			onclick="Myclear('div2','div3',3)">
+	</div>
+	<BR>
+	<BR>
+	<BR>
+	<div id="div5">Longitude</div>
+	<div id="div6">
+		<input type="text" name="long1" size=20
+			onclick="Myclear('div7','div8',1)">
+	</div>
+	<div id="div7">
+		<input type="text" name="long2" size=20
+			onclick="Myclear('div6','div8',2)">
+	</div>
+	<div id="div8">
+		<input type="text" name="long3" size=20
+			onclick="Myclear('div6','div7',3)">
+	</div>
+	<BR>
+	<BR>
+	<BR>
+	<div id="div9">&nbsp;</div>
+	<div id="div10">Decimal (e.g. 41.43548)</div>
+	<div id="div11">DDD MM SS</div>
+	<div id="div12">DDD MM.MMM</div>
+
+	<BR>
+	<BR>
+	<BR>
+	<footer>
+		<center>
+			<button type="button" onclick="convert()">Convert</button>
+		</center>
+
+	</footer>
+
+
+</body>
+</html>
