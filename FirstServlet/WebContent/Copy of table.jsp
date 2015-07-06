@@ -5,7 +5,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" type="text/css" href="table.css">
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <title>Table</title>
 </head>
 <body> 
@@ -14,14 +13,14 @@
 <%
 	Random random = new Random();
 	int num;
-	int cellNum = 0;
 	for(int row  = 0; row < 10; row++)
 	{
 		out.print("<tr>");
 		for(int cell = 0; cell < 20; cell++)
 		{
 			num = random.nextInt(5000);
-			out.print("<td id=cell" + cellNum++ + ">" + num + "</td>");
+			out.print("<td>" + num);
+			
 		}
 		out.print("</tr>");
 	}
@@ -46,30 +45,37 @@
  
 </select>
 
+
 <script type="text/javascript">
+
+
 var cycle = 1;
 var intervalVar;
+var limit = Number(document.getElementById("alarmLimit").value);
 
-var limit = Number($('#alarmLimit').val());
-var numRows = Number($('#theTable tr').length);
-var rowLength = Number($('#theTable tr:first td').length);
+var numRows = document.getElementById("theTable").rows.length;
+var rowLength = document.getElementById("theTable").rows[0].cells.length;
 
-var defaultBackgroundColor = $("#theTable tr:first td:first").css("backgroundColor"); 
-var defaultTextColor =  $("#theTable tr:first td:first").css("color"); 
+var defaultBackgroundColor = document.getElementById("theTable").rows[0].cells[0].style.backgroundColor; 
+var defaultTextColor = document.getElementById("theTable").rows[0].cells[0].style.color; 
 
 function setAlarmLimit() {
-  limit = Number($('#alarmLimit').val());
+  limit = document.getElementById("alarmLimit").value;
   showAlarms();
 }
 
 function clearAlert()
 {
 	clearInterval(intervalVar);
-	
-	$('td').each(function() {
-		$(this).css("backgroundColor",defaultBackgroundColor);
-		$(this).css("color",defaultTextColor);
-	});
+
+	for(var row = 0; row < numRows; row++)
+	{
+		for(var column = 0; column < rowLength; column++)
+		{
+			document.getElementById("theTable").rows[row].cells[column].style.backgroundColor = defaultBackgroundColor; 
+			document.getElementById("theTable").rows[row].cells[column].style.color = defaultTextColor; 
+		}
+	}
 }
 
 function blink()
@@ -95,15 +101,18 @@ function blink()
 		cycle = 1;
 		}
 	
-	
-	$('#theTable tr td').each(function(){
-		if(Number($(this).text()) > limit)
-			{
-				$(this).css({'backgroundColor' : bgColor, 'color' : fgColor });
-			}
-	});
-	
-	
+	for(var row = 0; row < numRows; row++)
+	{
+		for(var column = 0; column < rowLength; column++)
+		{
+			if(Number(document.getElementById("theTable").rows[row].cells[column].innerHTML) > limit)
+				{
+				//alert(document.getElementById("theTable").rows[row].cells[column].innerHTML);
+				document.getElementById("theTable").rows[row].cells[column].style.backgroundColor = bgColor; 
+				document.getElementById("theTable").rows[row].cells[column].style.color = fgColor; 
+				}
+		}
+	}
 }
 
 function showAlarms()
